@@ -1,7 +1,10 @@
-﻿namespace todo_api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace todo_api.Models
 {
     public class TodoItem
     {
+        
         public long Id { get; set; }
 
         public string Description { get; set; }

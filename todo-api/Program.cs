@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using todo_api.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,15 +19,17 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddOpenApi();
+builder.Services.AddDbContext<TodoContext>(options =>
+{
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(
+            builder.Configuration.GetConnectionString("DefaultConnection")
+        )
+    );
+});
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 
 app.UseHttpsRedirection();

@@ -18,15 +18,82 @@ namespace todo_api.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateItem(TodoItem item)
+        {
+
+            _context.TodoListItems.Add(item);
+            await _context.SaveChangesAsync();
+
+            return Ok(item);
+
+        }
+
+
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetItems()
         {
             
-            var todos = await _context.TodoListItems.ToListAsync();
+            var result = await _context.TodoListItems.ToListAsync();
             
 
 
-            return Ok(todos);
+            return Ok(result);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetItem(long id)
+        {
+
+         
+           var result = await _context.TodoListItems.FindAsync(id);
+
+           if(result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateItem(long id, TodoItem item)
+        {
+
+            if (id != item.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(item).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_context.TodoListItems.FindAsync(id));
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteItem(long id)
+        {
+            var todoItem = await _context.TodoListItems.FindAsync(id);
+            if (todoItem == null)
+            {
+                return NotFound();
+            }
+
+            _context.TodoListItems.Remove(todoItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(todoItem);
         }
     }
 

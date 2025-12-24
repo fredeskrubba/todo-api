@@ -77,7 +77,9 @@ namespace todo_api.Controllers
                 return BadRequest();
             }
 
-            return Ok(_context.TodoListItems.FindAsync(id));
+            var result = await _context.TodoListItems.FindAsync(id);
+
+            return Ok(result);
 
         }
 

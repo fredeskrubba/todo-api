@@ -22,6 +22,8 @@ namespace todo_api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItem(TodoItem item)
         {
+            // update later when implementing user logic
+            item.UserId = 1;
 
             _context.TodoListItems.Add(item);
             await _context.SaveChangesAsync();
@@ -32,7 +34,9 @@ namespace todo_api.Controllers
                 Title = item.Title,
                 Description = item.Description,
                 Color = item.Color,
-                IsComplete = item.IsComplete
+                IsComplete = item.IsComplete,
+                DueDate = item.DueDate
+                
             };
             return Ok(result);
 
@@ -85,6 +89,8 @@ namespace todo_api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(long id, TodoItem item)
         {
+            // update later when implementing user logic
+            item.UserId = 1;
 
             if (id != item.Id)
             {
@@ -110,7 +116,7 @@ namespace todo_api.Controllers
                 Title = updatedItem.Title,
                 Description = updatedItem.Description,
                 Color = updatedItem.Color,
-                IsComplete = updatedItem.IsComplete
+                IsComplete = updatedItem.IsComplete,
             };
 
             return Ok(result);

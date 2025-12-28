@@ -8,5 +8,7 @@
         {
         }
         public DbSet<TodoItem> TodoListItems { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }

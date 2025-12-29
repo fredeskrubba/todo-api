@@ -22,6 +22,10 @@ namespace todo_api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItem(TodoItem item)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             // update later when implementing user logic
             item.UserId = 1;
 
@@ -66,8 +70,8 @@ namespace todo_api.Controllers
         public async Task<IActionResult> GetItem(long id)
         {
 
-         
-           var item = await _context.TodoListItems.FindAsync(id);
+            
+            var item = await _context.TodoListItems.FindAsync(id);
 
            if(item == null)
             {
@@ -89,6 +93,11 @@ namespace todo_api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(long id, TodoItem item)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             // update later when implementing user logic
             item.UserId = 1;
 

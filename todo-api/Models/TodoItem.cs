@@ -19,8 +19,8 @@ namespace todo_api.Models
         [Required]
         public DateTime DueDate { get; set; }
 
-        public long CategoryId { get; set; }
+        public long? CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
     }
 }

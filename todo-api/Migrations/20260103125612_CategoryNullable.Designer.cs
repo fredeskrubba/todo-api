@@ -11,8 +11,8 @@ using todo_api.Context;
 namespace todo_api.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    [Migration("20251231124017_AddCategories2")]
-    partial class AddCategories2
+    [Migration("20260103125612_CategoryNullable")]
+    partial class CategoryNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,14 +32,22 @@ namespace todo_api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -50,7 +58,7 @@ namespace todo_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Color")
@@ -75,6 +83,8 @@ namespace todo_api.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -117,13 +127,30 @@ namespace todo_api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("todo_api.Models.Category", b =>
+                {
+                    b.HasOne("todo_api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("todo_api.Models.TodoItem", b =>
                 {
+                    b.HasOne("todo_api.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("todo_api.Models.User", null)
                         .WithMany("TodoItems")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("todo_api.Models.User", b =>

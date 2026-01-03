@@ -58,7 +58,8 @@ namespace todo_api.Controllers
                 Title = item.Title,
                 Description = item.Description,
                 Color = item.Color,
-                IsComplete = item.IsComplete
+                IsComplete = item.IsComplete,
+                DueDate = item.DueDate
 
             }).ToListAsync();
 
@@ -84,7 +85,8 @@ namespace todo_api.Controllers
                 Title = item.Title,
                 Description = item.Description,
                 Color = item.Color,
-                IsComplete = item.IsComplete
+                IsComplete = item.IsComplete,
+                DueDate = item.DueDate
             };
 
             return Ok(result);
@@ -126,6 +128,7 @@ namespace todo_api.Controllers
                 Description = updatedItem.Description,
                 Color = updatedItem.Color,
                 IsComplete = updatedItem.IsComplete,
+                DueDate = updatedItem.DueDate
             };
 
             return Ok(result);
@@ -150,7 +153,8 @@ namespace todo_api.Controllers
                 Title = todoItem.Title,
                 Description = todoItem.Description,
                 Color = todoItem.Color,
-                IsComplete = todoItem.IsComplete
+                IsComplete = todoItem.IsComplete,
+                DueDate = todoItem.DueDate
             };
 
             return Ok(result);

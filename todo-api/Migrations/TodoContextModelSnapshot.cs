@@ -55,7 +55,7 @@ namespace todo_api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Color")
@@ -139,9 +139,7 @@ namespace todo_api.Migrations
                 {
                     b.HasOne("todo_api.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("todo_api.Models.User", null)
                         .WithMany("TodoItems")

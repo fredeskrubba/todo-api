@@ -10,6 +10,8 @@
         public string Title { get; set; }
         public bool IsComplete { get; set; } = false;
 
+        public long? CategoryId { get; set; }
+
         public DateTime DueDate { get; set; }
     }
 }

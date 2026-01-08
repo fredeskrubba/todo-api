@@ -20,7 +20,7 @@ namespace todo_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateItem(TodoItem item)
+        public async Task<IActionResult> CreateItem([FromBody] TodoItem item)
         {
             if (!ModelState.IsValid)
             {
@@ -39,8 +39,8 @@ namespace todo_api.Controllers
                 Description = item.Description,
                 Color = item.Color,
                 IsComplete = item.IsComplete,
-                DueDate = item.DueDate
-                
+                DueDate = item.DueDate,
+                CategoryId = item.CategoryId
             };
             return Ok(result);
 
@@ -59,8 +59,8 @@ namespace todo_api.Controllers
                 Description = item.Description,
                 Color = item.Color,
                 IsComplete = item.IsComplete,
-                DueDate = item.DueDate
-
+                DueDate = item.DueDate,
+                CategoryId = item.CategoryId
             }).ToListAsync();
 
             return Ok(result);

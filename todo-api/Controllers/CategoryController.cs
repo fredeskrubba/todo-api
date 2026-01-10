@@ -23,8 +23,6 @@ namespace todo_api.Controllers
         public async Task<IActionResult> CreateCategory(CategoryDTO createdCategory)
         {
 
-            var user = await _context.Users.FindAsync(1);
-     
 
             Category category = new Category()
             {
@@ -32,7 +30,6 @@ namespace todo_api.Controllers
                 UserId = createdCategory.UserId,
                 Name = createdCategory.Name,
                 Color = createdCategory.Color,
-                User = user,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
 

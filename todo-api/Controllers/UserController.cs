@@ -28,7 +28,6 @@ namespace todo_api.Controllers
                 FirstName = createdUser.FirstName,
                 LastName = createdUser.LastName,
                 Email = createdUser.Email,
-                IsAdmin = createdUser.IsAdmin,
 
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
@@ -46,7 +45,6 @@ namespace todo_api.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                IsAdmin = user.IsAdmin,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
 
@@ -66,7 +64,6 @@ namespace todo_api.Controllers
                 FirstName = item.FirstName,
                 LastName = item.LastName,
                 Email = item.Email,
-                IsAdmin = item.IsAdmin,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = item.UpdatedAt,
                 
@@ -92,7 +89,6 @@ namespace todo_api.Controllers
                 FirstName = item.FirstName,
                 LastName = item.LastName,
                 Email = item.Email,
-                IsAdmin = item.IsAdmin,
                 CreatedAt = item.CreatedAt,
                 UpdatedAt = item.UpdatedAt,
 
@@ -120,7 +116,6 @@ namespace todo_api.Controllers
             user.FirstName = item.FirstName;
             user.LastName = item.LastName;
             user.Email = item.Email;
-            user.IsAdmin = item.IsAdmin;
             user.UpdatedAt = DateTime.UtcNow;
 
             try
@@ -140,7 +135,6 @@ namespace todo_api.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                IsAdmin = user.IsAdmin,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
             };
@@ -167,7 +161,6 @@ namespace todo_api.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                IsAdmin = user.IsAdmin,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
             };

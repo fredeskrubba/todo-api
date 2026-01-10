@@ -18,7 +18,6 @@ namespace todo_api.Models
         [Required]
         public string PasswordHash { get; set; }
 
-        public bool IsAdmin { get; set; } = false;
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -26,5 +25,10 @@ namespace todo_api.Models
         public DateTime? UpdatedAt { get; set; }
 
         public ICollection<TodoItem> TodoItems { get; set; }
+
+        public string GetFullName()
+        {
+            return $"{this.FirstName} {this.LastName}";
+        }
     }
 }

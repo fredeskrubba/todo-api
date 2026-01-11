@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using todo_api.Context;
+using todo_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddDbContext<TodoContext>(options =>
     );
 });
 
+builder.Services.AddScoped<IAuthService, AuthService>();
 var app = builder.Build();
 
 

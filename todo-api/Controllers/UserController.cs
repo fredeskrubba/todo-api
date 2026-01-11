@@ -11,6 +11,7 @@ namespace todo_api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        // registering/creating a user is currently in the auth controller
         private readonly TodoContext _context;
 
         public UserController(TodoContext context)
@@ -18,42 +19,7 @@ namespace todo_api.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserDTO createdUser)
-        {
-            var hasher = new PasswordHasher<User>();
-
-            User user = new User()
-            {
-                FirstName = createdUser.FirstName,
-                LastName = createdUser.LastName,
-                Email = createdUser.Email,
-
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-
-            };
-
-            user.PasswordHash = hasher.HashPassword(user, createdUser.Password);
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            UserDTO userDTO = new UserDTO()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                CreatedAt = user.CreatedAt,
-                UpdatedAt = user.UpdatedAt,
-
-            };
-
-            return Ok(userDTO);
-
-        }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {

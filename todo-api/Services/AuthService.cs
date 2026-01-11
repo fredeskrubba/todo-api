@@ -36,7 +36,7 @@ namespace todo_api.Services
             return user;
         }
 
-        public async Task<string?> LoginAsync(UserDTO request)
+        public async Task<string?> LoginAsync(LoginDTO request)
         {
             
             

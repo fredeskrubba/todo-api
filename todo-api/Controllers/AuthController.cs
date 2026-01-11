@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -31,7 +32,7 @@ namespace todo_api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDTO request)
+        public async Task<ActionResult<string>> Login(LoginDTO request)
         {
             
             string token = await authService.LoginAsync(request);
@@ -43,6 +44,12 @@ namespace todo_api.Controllers
             return Ok(token);
         }
 
+        [HttpPost("AuthTest")]
+        [Authorize]
+        public ActionResult<string> AuthTest()
+        {
+            return Ok("authorized");
+        }
         
     }
 }

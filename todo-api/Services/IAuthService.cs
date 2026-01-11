@@ -6,6 +6,6 @@ namespace todo_api.Services
     public interface IAuthService
     {
         Task<User?> RegisterAsync(UserDTO request);
-        Task<string?> LoginAsync(UserDTO request);
+        Task<string?> LoginAsync(LoginDTO request);
     }
 }

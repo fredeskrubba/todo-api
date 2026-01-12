@@ -56,10 +56,11 @@ namespace todo_api.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetCategories(int userId)
         {
             var result = await _context.Categories
+            .Where(category=> category.UserId == userId)
             .Select(category => new CategoryDTO
             {
                 Id = category.Id,
@@ -76,30 +77,6 @@ namespace todo_api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory(long id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            var result = new CategoryDTO
-            {
-                Id = category.Id,
-                UserId = category.UserId,
-                Name = category.Name,
-                Color = category.Color,
-
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-
-            };
-
-            return Ok(result);
-        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(long id, CategoryDTO item)

@@ -5,7 +5,7 @@ namespace todo_api.Services
 {
     public interface IAuthService
     {
-        Task<User?> RegisterAsync(UserDTO request);
-        Task<string?> LoginAsync(LoginDTO request);
+        Task<User?> RegisterAsync(CreateUserDTO request);
+        Task<LoginResponseDTO?> LoginAsync(LoginDTO request);
     }
 }

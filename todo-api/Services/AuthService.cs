@@ -12,7 +12,7 @@ namespace todo_api.Services
 {
     public class AuthService(TodoContext context, IConfiguration configuration) : IAuthService
     {
-        public async Task<User?> RegisterAsync(UserDTO request)
+        public async Task<User?> RegisterAsync(CreateUserDTO request)
         {
             if(await context.Users.AnyAsync(u => u.Email == request.Email))
             {
@@ -36,7 +36,7 @@ namespace todo_api.Services
             return user;
         }
 
-        public async Task<string?> LoginAsync(LoginDTO request)
+        public async Task<LoginResponseDTO?> LoginAsync(LoginDTO request)
         {
             
             
@@ -51,7 +51,23 @@ namespace todo_api.Services
                 return null;
             }
 
-            return CreateToken(user);
+            UserDTO LoggedInUser = new()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            };
+
+            LoginResponseDTO response = new()
+            {
+                user = LoggedInUser,
+                Token = CreateToken(user)
+            };
+
+            return response;
         }
 
         private string CreateToken(User user)

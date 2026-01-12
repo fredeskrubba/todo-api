@@ -19,7 +19,7 @@ namespace todo_api.Controllers
     {
       
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDTO request)
+        public async Task<ActionResult<User>> Register(CreateUserDTO request)
         {
             var user = await authService.RegisterAsync(request);
 
@@ -32,16 +32,16 @@ namespace todo_api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(LoginDTO request)
+        public async Task<ActionResult<LoginResponseDTO>> Login(LoginDTO request)
         {
             
-            string token = await authService.LoginAsync(request);
-            if(token == null)
+            LoginResponseDTO response = await authService.LoginAsync(request);
+            if(response.Token == null)
             {
                 return BadRequest("Invalid Credentials");
             }
 
-            return Ok(token);
+            return Ok(response);
         }
 
         [HttpPost("AuthTest")]

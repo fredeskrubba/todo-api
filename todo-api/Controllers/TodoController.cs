@@ -20,14 +20,13 @@ namespace todo_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateItem([FromBody] TodoItem item)
+        public async Task<IActionResult> CreateItem([FromBody] TodoItem item, long userId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            // update later when implementing user logic
-            item.UserId = 1;
+           
 
             _context.TodoListItems.Add(item);
             await _context.SaveChangesAsync();
@@ -47,49 +46,24 @@ namespace todo_api.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> GetItems()
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetItems(int userId)
         {
+            var items = await _context.TodoListItems
+                .Where(item => item.UserId == userId)
+                .Select(item => new TodoItemDTO
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Description = item.Description,
+                    Color = item.Color,
+                    IsComplete = item.IsComplete,
+                    DueDate = item.DueDate,
+                    CategoryId = item.CategoryId
+                })
+                .ToListAsync();
 
-            var result = await _context.TodoListItems
-            .Select(item => new TodoItemDTO
-            {
-                Id = item.Id,
-                Title = item.Title,
-                Description = item.Description,
-                Color = item.Color,
-                IsComplete = item.IsComplete,
-                DueDate = item.DueDate,
-                CategoryId = item.CategoryId
-            }).ToListAsync();
-
-            return Ok(result);
-        }
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetItem(long id)
-        {
-
-            
-            var item = await _context.TodoListItems.FindAsync(id);
-
-           if(item == null)
-            {
-                return NotFound();
-            }
-
-            var result = new TodoItemDTO
-            {
-                Id = item.Id,
-                Title = item.Title,
-                Description = item.Description,
-                Color = item.Color,
-                IsComplete = item.IsComplete,
-                DueDate = item.DueDate
-            };
-
-            return Ok(result);
+            return Ok(items);
         }
 
         [HttpPut("{id}")]
@@ -99,9 +73,6 @@ namespace todo_api.Controllers
             {
                 return BadRequest();
             }
-
-            // update later when implementing user logic
-            item.UserId = 1;
 
             if (id != item.Id)
             {

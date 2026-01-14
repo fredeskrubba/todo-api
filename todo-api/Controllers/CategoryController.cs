@@ -60,7 +60,8 @@ namespace todo_api.Controllers
         public async Task<IActionResult> GetCategories(int userId)
         {
             var result = await _context.Categories
-            .Where(category=> category.UserId == userId)
+            .Where(category => category.UserId == userId || category.UserId == null)
+            .OrderBy(category => category.Id)
             .Select(category => new CategoryDTO
             {
                 Id = category.Id,

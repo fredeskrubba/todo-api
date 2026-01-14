@@ -67,7 +67,7 @@ namespace todo_api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateItem(long id, TodoItem item)
+        public async Task<IActionResult> UpdateItem(long id, TodoItemDTO item)
         {
             if (!ModelState.IsValid)
             {
@@ -79,7 +79,16 @@ namespace todo_api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(item).State = EntityState.Modified;
+            var itemToUpdate = await _context.TodoListItems.FindAsync(id);
+
+            itemToUpdate.Title = item.Title;
+            itemToUpdate.Description = item.Description;
+            itemToUpdate.Color = item.Color;
+            itemToUpdate.IsComplete = item.IsComplete;
+            itemToUpdate.DueDate = item.DueDate;
+            itemToUpdate.CategoryId = item.CategoryId;
+
+            _context.Entry(itemToUpdate).State = EntityState.Modified;
 
             try
             {
@@ -90,16 +99,15 @@ namespace todo_api.Controllers
                 return BadRequest();
             }
 
-            var updatedItem = await _context.TodoListItems.FindAsync(id);
-
-            var result = new TodoItemDTO
+            var result = new TodoItemDTO()
             {
-                Id = updatedItem.Id,
-                Title = updatedItem.Title,
-                Description = updatedItem.Description,
-                Color = updatedItem.Color,
-                IsComplete = updatedItem.IsComplete,
-                DueDate = updatedItem.DueDate
+                Title = itemToUpdate.Title,
+                Id = itemToUpdate.Id,
+                Description = itemToUpdate.Description,
+                Color = itemToUpdate.Color,
+                IsComplete = itemToUpdate.IsComplete,
+                DueDate = itemToUpdate.DueDate,
+                CategoryId = itemToUpdate.CategoryId
             };
 
             return Ok(result);

@@ -8,7 +8,7 @@ namespace todo_api.Models
         public long Id { get; set; }
 
         public long UserId { get; set; }
-        [Required]
+        
         public string Description { get; set; }
 
         public string Color { get; set; } = "#61bd92";

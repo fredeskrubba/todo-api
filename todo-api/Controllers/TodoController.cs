@@ -5,19 +5,15 @@ using System.Threading.Tasks;
 using todo_api.Context;
 using todo_api.Models;
 using todo_api.Models.Dtos;
+using todo_api.Services;
 
 namespace todo_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : ControllerBase
+    public class TodoController(ITodoService todoService) : ControllerBase
     {
-        private readonly TodoContext _context;
-
-        public TodoController(TodoContext context)
-        {
-            _context = context;
-        }
+       
 
         [HttpPost]
         public async Task<IActionResult> CreateItem([FromBody] TodoItem item, long userId)
@@ -26,21 +22,10 @@ namespace todo_api.Controllers
             {
                 return BadRequest();
             }
-           
 
-            _context.TodoListItems.Add(item);
-            await _context.SaveChangesAsync();
+            TodoItemDTO result = await todoService.CreateItemAsync( item, userId);
 
-            TodoItemDTO result = new TodoItemDTO()
-            {
-                Id = item.Id,
-                Title = item.Title,
-                Description = item.Description,
-                Color = item.Color,
-                IsComplete = item.IsComplete,
-                DueDate = item.DueDate,
-                CategoryId = item.CategoryId
-            };
+
             return Ok(result);
 
         }
@@ -49,19 +34,8 @@ namespace todo_api.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetItems(int userId)
         {
-            var items = await _context.TodoListItems
-                .Where(item => item.UserId == userId)
-                .Select(item => new TodoItemDTO
-                {
-                    Id = item.Id,
-                    Title = item.Title,
-                    Description = item.Description,
-                    Color = item.Color,
-                    IsComplete = item.IsComplete,
-                    DueDate = item.DueDate,
-                    CategoryId = item.CategoryId
-                })
-                .ToListAsync();
+
+            var items = await todoService.GetTodoItemsAsync(userId);
 
             return Ok(items);
         }
@@ -79,36 +53,16 @@ namespace todo_api.Controllers
                 return BadRequest();
             }
 
-            var itemToUpdate = await _context.TodoListItems.FindAsync(id);
-
-            itemToUpdate.Title = item.Title;
-            itemToUpdate.Description = item.Description;
-            itemToUpdate.Color = item.Color;
-            itemToUpdate.IsComplete = item.IsComplete;
-            itemToUpdate.DueDate = item.DueDate;
-            itemToUpdate.CategoryId = item.CategoryId;
-
-            _context.Entry(itemToUpdate).State = EntityState.Modified;
+            TodoItemDTO result;
 
             try
             {
-                await _context.SaveChangesAsync();
+                result = await todoService.UpdateItemAsync(id, item);
             }
             catch (DbUpdateConcurrencyException)
             {
                 return BadRequest();
             }
-
-            var result = new TodoItemDTO()
-            {
-                Title = itemToUpdate.Title,
-                Id = itemToUpdate.Id,
-                Description = itemToUpdate.Description,
-                Color = itemToUpdate.Color,
-                IsComplete = itemToUpdate.IsComplete,
-                DueDate = itemToUpdate.DueDate,
-                CategoryId = itemToUpdate.CategoryId
-            };
 
             return Ok(result);
 
@@ -117,24 +71,13 @@ namespace todo_api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(long id)
         {
-            var todoItem = await _context.TodoListItems.FindAsync(id);
-            if (todoItem == null)
+            var result = await todoService.DeleteItemAsync(id);
+
+            if (result == null)
             {
                 return NotFound();
             }
-
-            _context.TodoListItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
-
-            var result = new TodoItemDTO
-            {
-                Id = todoItem.Id,
-                Title = todoItem.Title,
-                Description = todoItem.Description,
-                Color = todoItem.Color,
-                IsComplete = todoItem.IsComplete,
-                DueDate = todoItem.DueDate
-            };
+            
 
             return Ok(result);
         }

@@ -5,52 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using todo_api.Context;
 using todo_api.Models;
 using todo_api.Models.Dtos;
+using todo_api.Services;
 
 namespace todo_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController(ICategoryService categoryService) : ControllerBase
     {
         private readonly TodoContext _context;
 
-        public CategoryController(TodoContext context)
-        {
-            _context = context;
-        }
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CategoryDTO createdCategory)
         {
 
 
-            Category category = new Category()
-            {
-                Id = createdCategory.Id,
-                UserId = createdCategory.UserId,
-                Name = createdCategory.Name,
-                Color = createdCategory.Color,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-
-            };
-
-
-            
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            CategoryDTO userDTO = new CategoryDTO()
-            {
-                Id = category.Id,
-                UserId = category.UserId,
-                Name = category.Name,
-                Color = category.Color,
-
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-
-            };
+            var userDTO = await categoryService.CreateCategoryAsync(createdCategory);
 
             return Ok(userDTO);
 
@@ -59,21 +30,7 @@ namespace todo_api.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetCategories(int userId)
         {
-            var result = await _context.Categories
-            .Where(category => category.UserId == userId || category.UserId == null)
-            .OrderBy(category => category.Id)
-            .Select(category => new CategoryDTO
-            {
-                Id = category.Id,
-                UserId = category.UserId,
-                Name = category.Name,
-                Color = category.Color,
-
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-
-
-            }).ToListAsync();
+            var result = await categoryService.GetCategoriesAsync(userId);
 
             return Ok(result);
         }
@@ -87,42 +44,7 @@ namespace todo_api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-
-            category.Id = item.Id;
-            category.UserId = item.UserId;
-            category.Name = item.Name;
-            category.Color = item.Color;
-
-            category.UpdatedAt = DateTime.UtcNow;
-
-            try
-            {
-
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return Conflict("The user was modified by another process.");
-            }
-
-
-            var result = new CategoryDTO
-            {
-                Id = category.Id,
-                UserId = category.UserId,
-                Name = category.Name,
-                Color = category.Color,
-
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-            };
+            var result = await categoryService.UpdateCategoryAsync(id, item);
 
             return Ok(result);
 
@@ -131,25 +53,7 @@ namespace todo_api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(long id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            var result = new CategoryDTO
-            {
-                Id = category.Id,
-                UserId = category.UserId,
-                Name = category.Name,
-                Color = category.Color,
-
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-            };
+            var result = await categoryService.DeleteCategoryAsync(id);
 
             return Ok(result);
         }

@@ -47,6 +47,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 var app = builder.Build();
 
 

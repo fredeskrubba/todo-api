@@ -13,7 +13,6 @@ namespace todo_api.Controllers
     [ApiController]
     public class CategoryController(ICategoryService categoryService) : ControllerBase
     {
-        private readonly TodoContext _context;
 
 
         [HttpPost]

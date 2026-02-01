@@ -86,7 +86,7 @@ namespace todo_api.Services
             return result;
         }
 
-        public async Task<Note> UpdateNoteAsync(long id, Note updatedNote)
+        public async Task<Note> UpdateNoteAsync(long id, NoteDTO updatedNote)
         {
             var note = await context.Notes.FindAsync(id);
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using todo_api.Models;
 using todo_api.Services;
+using todo_api.Models.Dtos;
 
 namespace todo_api.Controllers
 {
@@ -30,7 +31,7 @@ namespace todo_api.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateNote(long id, Note note)
+        public async Task<IActionResult> UpdateNote(long id, NoteDTO note)
         {
             if (!ModelState.IsValid)
             {
@@ -38,6 +39,7 @@ namespace todo_api.Controllers
             }
 
             var result = await noteService.UpdateNoteAsync(id, note);
+
 
             return Ok(result);
 

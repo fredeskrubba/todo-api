@@ -7,7 +7,7 @@ namespace todo_api.Services
 {
     public class NoteService(TodoContext context, IConfiguration configuration) : INoteService
     {
-        public async Task<Note> CreateNoteAsync(Note createdNote)
+        public async Task<NoteDTO> CreateNoteAsync(NoteDTO createdNote)
         {
             Note note = new Note()
             {
@@ -34,8 +34,16 @@ namespace todo_api.Services
                 throw new Exception("An error occurred while saving the note to the database.", ex);
             }
 
-            
-            return note;
+            NoteDTO newNote = new NoteDTO()
+            {
+                Id = note.Id,
+                UserId = note.UserId,
+                Title = note.Title,
+                Color = note.Color,
+                HtmlContent = note.HtmlContent
+            };
+
+            return newNote;
         }
 
         public async Task<bool> DeleteNoteAsync(long id)
@@ -61,12 +69,12 @@ namespace todo_api.Services
             return true;
         }
 
-        public async Task<IEnumerable<Note>> GetNotesAsync(int userId)
+        public async Task<IEnumerable<NoteDTO>> GetNotesAsync(int userId)
         {
             var result = await context.Notes
             .Where(note => note.UserId == userId)
             .OrderBy(note => note.CreatedAt)
-            .Select(note => new Note()
+            .Select(note => new NoteDTO()
             {
                 Id = note.Id,
                 UserId = note.UserId,
@@ -86,7 +94,7 @@ namespace todo_api.Services
             return result;
         }
 
-        public async Task<Note> UpdateNoteAsync(long id, NoteDTO updatedNote)
+        public async Task<NoteDTO> UpdateNoteAsync(long id, NoteDTO updatedNote)
         {
             var note = await context.Notes.FindAsync(id);
 
@@ -114,7 +122,18 @@ namespace todo_api.Services
                 throw new Exception("An error occurred while updating the note in the database.");
             }
 
-            return note;
+            NoteDTO newNote = new NoteDTO()
+            {
+                Id = note.Id,
+                UserId = note.UserId,
+                Title = note.Title,
+                Color = note.Color,
+                HtmlContent = note.HtmlContent,
+                CreatedAt = note.CreatedAt,
+                UpdatedAt = note.UpdatedAt
+            };
+
+            return newNote;
         }
     }
 }

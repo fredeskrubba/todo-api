@@ -5,9 +5,9 @@ namespace todo_api.Services
 {
     public interface INoteService
     {
-        Task<IEnumerable<Note>> GetNotesAsync(int userId);
-        Task<Note> CreateNoteAsync(Note note);
-        Task<Note> UpdateNoteAsync(long id, NoteDTO note);
+        Task<IEnumerable<NoteDTO>> GetNotesAsync(int userId);
+        Task<NoteDTO> CreateNoteAsync(NoteDTO note);
+        Task<NoteDTO> UpdateNoteAsync(long id, NoteDTO note);
         Task<bool> DeleteNoteAsync(long id);
     }
 }

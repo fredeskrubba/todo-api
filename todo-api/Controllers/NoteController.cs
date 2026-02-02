@@ -11,7 +11,7 @@ namespace todo_api.Controllers
     public class NoteController(INoteService noteService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> CreateNote(Note createdNote)
+        public async Task<IActionResult> CreateNote(NoteDTO createdNote)
         {
 
 

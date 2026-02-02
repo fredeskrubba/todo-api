@@ -8,5 +8,8 @@
         public string HtmlContent { get; set; }
 
         public string Color { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTimeOffset? UpdatedAt { get; set; }
     }
 }

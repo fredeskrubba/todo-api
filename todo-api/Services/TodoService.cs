@@ -24,7 +24,6 @@ namespace todo_api.Services
                 Id = item.Id,
                 Title = item.Title,
                 Description = item.Description,
-                Color = item.Color,
                 IsComplete = item.IsComplete,
                 DueDate = item.DueDate,
                 CategoryId = item.CategoryId
@@ -71,7 +70,6 @@ namespace todo_api.Services
                     Id = item.Id,
                     Title = item.Title,
                     Description = item.Description,
-                    Color = item.Color,
                     IsComplete = item.IsComplete,
                     DueDate = item.DueDate,
                     CategoryId = item.CategoryId
@@ -87,7 +85,6 @@ namespace todo_api.Services
 
             itemToUpdate.Title = item.Title;
             itemToUpdate.Description = item.Description;
-            itemToUpdate.Color = item.Color;
             itemToUpdate.IsComplete = item.IsComplete;
             itemToUpdate.DueDate = item.DueDate;
             itemToUpdate.CategoryId = item.CategoryId;
@@ -102,7 +99,6 @@ namespace todo_api.Services
                 Title = itemToUpdate.Title,
                 Id = itemToUpdate.Id,
                 Description = itemToUpdate.Description,
-                Color = itemToUpdate.Color,
                 IsComplete = itemToUpdate.IsComplete,
                 DueDate = itemToUpdate.DueDate,
                 CategoryId = itemToUpdate.CategoryId

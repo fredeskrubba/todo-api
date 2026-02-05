@@ -10,6 +10,6 @@
         public string Color { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTimeOffset? UpdatedAt { get; set; }
+        public DateTimeOffset? UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

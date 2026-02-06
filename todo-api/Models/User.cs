@@ -26,6 +26,8 @@ namespace todo_api.Models
 
         public ICollection<TodoItem> TodoItems { get; set; }
 
+        public string Role { get; set; } = "";
+
         public string GetFullName()
         {
             return $"{this.FirstName} {this.LastName}";

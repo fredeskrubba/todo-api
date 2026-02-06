@@ -44,12 +44,15 @@ namespace todo_api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("AuthTest")]
-        [Authorize]
-        public ActionResult<string> AuthTest()
+
+
+        [HttpPost("guest")]
+        public async Task<IActionResult> GuestLogin()
         {
-            return Ok("authorized");
+            var response = await authService.GuestLoginAsync();
+            return Ok(response);
         }
-        
+
+
     }
 }

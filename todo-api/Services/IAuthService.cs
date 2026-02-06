@@ -7,5 +7,7 @@ namespace todo_api.Services
     {
         Task<User?> RegisterAsync(CreateUserDTO request);
         Task<LoginResponseDTO?> LoginAsync(LoginDTO request);
+
+        Task<LoginResponseDTO> GuestLoginAsync();
     }
 }

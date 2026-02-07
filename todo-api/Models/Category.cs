@@ -15,5 +15,7 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }
+
+        public ICollection<TodoItem> TodoItems { get; set; } = new List<TodoItem>();
     }
 }

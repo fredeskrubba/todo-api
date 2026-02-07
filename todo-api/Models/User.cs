@@ -24,7 +24,10 @@ namespace todo_api.Models
 
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<TodoItem> TodoItems { get; set; }
+        public ICollection<Note> Notes { get; set; }
+
+        public ICollection<Category> Categories { get; set; }
+        public ICollection<TodoItem> TodoItems { get; set; } = new List<TodoItem>();
 
         public string Role { get; set; } = "";
 

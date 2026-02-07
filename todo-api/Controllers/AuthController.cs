@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -45,7 +46,7 @@ namespace todo_api.Controllers
         }
 
 
-
+        [EnableRateLimiting("GuestLoginPolicy")]
         [HttpPost("guest")]
         public async Task<IActionResult> GuestLogin()
         {

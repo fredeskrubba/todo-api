@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Threading.RateLimiting;
 using todo_api.Context;
 using todo_api.Services;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddDbContext<TodoContext>(options =>
     );
 });
 
+builder.Services.AddHostedService<GuestCleanupService>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -46,14 +49,42 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("GuestLoginPolicy", context =>
+    {
+        var ipAddress =
+            context.Connection.RemoteIpAddress?.ToString()
+            ?? "unknown-ip";
+
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: ipAddress,
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,                
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            });
+    });
+});
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INoteService, NoteService>();
 
+
+builder.Logging.ClearProviders();       // optional if you want only Debug logs
+builder.Logging.AddDebug();             // sends logs to VS Debug window
+builder.Logging.SetMinimumLevel(LogLevel.Information);
+
 var app = builder.Build();
 
+// Test log at the very start of the API
+Console.WriteLine(" Console.WriteLine test at API start");
+app.Logger.LogInformation("LogInformation test at API start");
 
 app.UseHttpsRedirection();
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using todo_api.Context;
 
@@ -10,9 +11,11 @@ using todo_api.Context;
 namespace todo_api.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    partial class TodoContextModelSnapshot : ModelSnapshot
+    [Migration("20260207121249_cascadecatandnotes")]
+    partial class cascadecatandnotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,9 +182,8 @@ namespace todo_api.Migrations
             modelBuilder.Entity("todo_api.Models.TodoItem", b =>
                 {
                     b.HasOne("todo_api.Models.Category", "Category")
-                        .WithMany("TodoItems")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("todo_api.Models.User", "User")
                         .WithMany("TodoItems")
@@ -192,11 +194,6 @@ namespace todo_api.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("todo_api.Models.Category", b =>
-                {
-                    b.Navigation("TodoItems");
                 });
 
             modelBuilder.Entity("todo_api.Models.User", b =>

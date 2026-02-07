@@ -9,6 +9,10 @@ namespace todo_api.Models
 
         public long UserId { get; set; }
         
+        // cascading deletion support
+
+        public User? User { get; set; } = null!;
+
         public string Description { get; set; }
 
         [Required]

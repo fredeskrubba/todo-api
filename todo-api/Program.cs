@@ -80,6 +80,9 @@ builder.Logging.ClearProviders();       // optional if you want only Debug logs
 builder.Logging.AddDebug();             // sends logs to VS Debug window
 builder.Logging.SetMinimumLevel(LogLevel.Information);
 
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
+
+
 var app = builder.Build();
 
 // Test log at the very start of the API

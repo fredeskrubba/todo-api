@@ -4,6 +4,23 @@ using Microsoft.IdentityModel.Tokens;
 using System.Threading.RateLimiting;
 using todo_api.Context;
 using todo_api.Services;
+using System.Net.Sockets;
+
+string host = "mysql-90242c3-note-app-skrubba.h.aivencloud.com";
+int port = 28537;
+
+try
+{
+    using (var client = new TcpClient())
+    {
+        client.Connect(host, port);
+        Console.WriteLine("TCP connection successful!");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"TCP connection failed: {ex.Message}");
+}
 
 var builder = WebApplication.CreateBuilder(args);
 

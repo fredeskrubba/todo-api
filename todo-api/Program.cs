@@ -79,9 +79,6 @@ builder.Services.AddScoped<INoteService, NoteService>();
 
 var app = builder.Build();
 
-// Test log at the very start of the API
-Console.WriteLine(" Console.WriteLine test at API start");
-app.Logger.LogInformation("LogInformation test at API start");
 
 app.UseHttpsRedirection();
 

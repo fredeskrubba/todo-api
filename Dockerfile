@@ -3,11 +3,11 @@ WORKDIR /src
 COPY . .
 
 # Specify the path to the project file
-RUN dotnet publish todo_api/todo_api.csproj -c Release -o /app
+RUN dotnet publish todo-api/todo-api.csproj -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app .
 ENV ASPNETCORE_URLS=http://+:10000
 EXPOSE 10000
-ENTRYPOINT ["dotnet", "todo_api.dll"]
+ENTRYPOINT ["dotnet", "todo-api.dll"]

@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.RateLimiting;
 using todo_api.Context;
 using todo_api.Services;
-using System.Net.Sockets;
+
+ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 string host = "mysql-90242c3-note-app-skrubba.h.aivencloud.com";
 int port = 28537;

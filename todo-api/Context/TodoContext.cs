@@ -43,6 +43,17 @@
                 .WithMany(u => u.Categories)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Category>().HasData(
+            new Category
+            {
+                Id = 1,
+                Name = "All",
+                Color = "#61bd92",
+                UserId = null,
+                CreatedAt = DateTime.UtcNow
+            }
+        );
         }
 
     }

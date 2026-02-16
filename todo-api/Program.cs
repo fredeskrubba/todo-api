@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173", "https://skrubba-note.statichost.page/")
+                .WithOrigins("http://localhost:5173", "https://skrubba-note.statichost.page")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

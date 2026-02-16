@@ -32,6 +32,7 @@ namespace todo_api.Controllers
             return Ok(user);
         }
 
+        [EnableRateLimiting("LoginPolicy")]
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponseDTO>> Login(LoginDTO request)
         {

@@ -70,6 +70,22 @@ builder.Services.AddRateLimiter(options =>
                 AutoReplenishment = true
             });
     });
+    options.AddPolicy("LoginPolicy", context =>
+    {
+        var ipAddress =
+            context.Connection.RemoteIpAddress?.ToString()
+            ?? "unknown-ip";
+
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: ipAddress,
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            });
+    });
 });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -84,9 +100,9 @@ var app = builder.Build();
 
 
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
-app.UseCors("AllowFrontend");
 
 app.MapControllers();
 

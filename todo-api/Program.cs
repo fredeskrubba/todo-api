@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.RateLimiting;
 using todo_api.Context;
 using todo_api.Services;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,12 +25,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<TodoContext>(options =>
 {
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("DefaultConnection")
-        )
-    );
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddHostedService<GuestCleanupService>();

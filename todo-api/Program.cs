@@ -11,13 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173", "https://skrubba-note.statichost.page", "https://www.skrubbanote.site")
+                .WithOrigins("http://localhost:5173", "http://127.0.0.1:5173", "https://skrubba-note.statichost.page", "https://www.skrubbanote.site")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -27,6 +29,8 @@ builder.Services.AddDbContext<TodoContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddHostedService<GuestCleanupService>();
 
@@ -91,8 +95,8 @@ builder.Services.AddScoped<INoteService, NoteService>();
 var app = builder.Build();
 
 
-app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

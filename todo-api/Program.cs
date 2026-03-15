@@ -91,7 +91,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INoteService, NoteService>();
 
 
-
+Console.WriteLine($"DEBUG: Connection String is: {builder.Configuration.GetConnectionString("DefaultConnection")}");
 var app = builder.Build();
 
 

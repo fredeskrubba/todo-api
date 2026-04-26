@@ -95,9 +95,10 @@ Console.WriteLine($"DEBUG: Connection String is: {builder.Configuration.GetConne
 var app = builder.Build();
 
 
-app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
